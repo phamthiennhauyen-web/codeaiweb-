@@ -250,6 +250,22 @@ def get_smtp_config():
 def get_mail_config():
     """Thông tin cấu hình gửi mail hiện tại (SMTP hoặc Brevo API)."""
     cfg = get_config()
+    
+    # Auto-detect from environment variables (for Render, Heroku, etc.)
+    env_brevo_key = os.environ.get('BREVO_API_KEY', '')
+    env_brevo_sender = os.environ.get('BREVO_SENDER_EMAIL', '')
+    env_brevo_name = os.environ.get('BREVO_SENDER_NAME', 'CodeAI')
+    
+    # If Brevo env vars exist, use them with priority
+    if env_brevo_key and env_brevo_sender:
+        return {
+            'provider': 'brevo',
+            'configured': True,
+            'apiKey': env_brevo_key,
+            'senderEmail': env_brevo_sender,
+            'senderName': env_brevo_name,
+        }
+    
     provider = cfg.get('provider') or 'smtp'
 
     if provider == 'brevo':
@@ -406,7 +422,11 @@ def _open_smtp(user, password):
     except Exception as e:
         errors.append('465: {}'.format(e))
 
-    raise RuntimeError(' | '.join(errors))
+    error_msg = ' | '.join(errors)
+    # Detect if running on Render or similar platforms that block SMTP ports
+    if 'Network is unreachable' in error_msg or 'Connection refused' in error_msg:
+        raise RuntimeError('SMTP ports (587/465) bị chặn trên hosting này. Vui lòng dùng Brevo API thay vì Gmail SMTP. Hướng dẫn: https://github.com/phamthiennhauyen-web/codeaiweb-#email-setup')
+    raise RuntimeError(error_msg)
 
 
 def test_smtp_login(user, password):
