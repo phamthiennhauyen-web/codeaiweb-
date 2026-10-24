@@ -1,0 +1,140 @@
+/* ==========================================
+   Setup (cấu hình gửi mail) page
+   ========================================== */
+
+.setup-wrap {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--spacing-xl);
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.setup-card {
+    position: relative;
+    width: 100%;
+    max-width: 440px;
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    padding: 2rem 1.75rem;
+    box-shadow: var(--shadow-xl);
+}
+
+.setup-card::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    background: linear-gradient(90deg, var(--primary-blue), var(--primary-blue-light), var(--primary-blue));
+    background-size: 200% 200%;
+    border-radius: var(--radius-xl);
+    z-index: -1;
+    animation: borderFlow 3s linear infinite;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    padding: 3px;
+    pointer-events: none;
+}
+
+.setup-status {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-lg);
+    background: rgba(0, 102, 255, 0.08);
+    color: var(--text-secondary);
+}
+
+.setup-status.ok {
+    background: rgba(0, 204, 102, 0.12);
+    color: #067a41;
+}
+
+.setup-status .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gray-medium);
+    flex-shrink: 0;
+}
+
+.setup-status.ok .dot {
+    background: var(--success-color);
+}
+
+.field-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 0.35rem;
+}
+
+.setup-hint {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    line-height: 1.4;
+    margin-top: 4px;
+}
+
+.setup-card .form-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.provider-tabs {
+    display: flex;
+    gap: 0.35rem;
+    background: var(--gray-light);
+    border-radius: var(--radius-md);
+    padding: 0.3rem;
+    margin-bottom: var(--spacing-lg);
+}
+
+.provider-tab {
+    flex: 1;
+    padding: 0.55rem 0.5rem;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.provider-tab:hover {
+    color: var(--primary-blue);
+}
+
+.provider-tab.active {
+    background: var(--white);
+    color: var(--primary-blue);
+    box-shadow: var(--shadow-sm);
+}
+
+.setup-success {
+    margin-top: var(--spacing-md);
+    padding: 0.55rem 0.8rem;
+    border-radius: var(--radius-md);
+    background: rgba(0, 204, 102, 0.12);
+    color: #067a41;
+    font-size: 0.85rem;
+    font-weight: 600;
+    animation: fadeIn 0.25s ease both;
+}
+
+@media (max-width: 480px) {
+    .setup-wrap {
+        padding: var(--spacing-md);
+    }
+
+    .setup-card {
+        padding: var(--spacing-lg);
+    }
+}

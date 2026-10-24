@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeAI - Cấu hình gửi mail</title>
+    <script>try{if(localStorage.getItem('codeai_theme')==='dark')document.documentElement.classList.add('theme-dark');}catch(e){}</script>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/setup.css">
+</head>
+<body>
+
+    <div class="setup-wrap">
+        <div class="setup-card">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                <h1>CodeAI</h1>
+            </div>
+
+            <div class="welcome-text">
+                <h2 data-i18n="setup.title">Cấu hình gửi mail</h2>
+                <p data-i18n="setup.subtitle">Chọn cách gửi mã xác thực</p>
+            </div>
+
+            <div class="setup-status" id="setupStatus"></div>
+
+            <div class="provider-tabs" id="providerTabs">
+                <button type="button" class="provider-tab active" data-provider="smtp" data-i18n="setup.provider.smtp">Gmail SMTP</button>
+                <button type="button" class="provider-tab" data-provider="brevo" data-i18n="setup.provider.brevo">Brevo API</button>
+            </div>
+
+            <form id="setupForm" class="auth-form" novalidate>
+
+                <!-- SMTP -->
+                <div id="smtpFields">
+                    <div class="form-group">
+                        <label class="field-label" data-i18n="setup.gmail">Gmail gửi mã</label>
+                        <input type="email" id="setupGmail" class="form-input" placeholder="your.email@gmail.com" autocomplete="off">
+                        <span class="error-message" id="setupGmailError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="field-label" data-i18n="setup.appPassword">App Password (16 ký tự)</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="setupAppPassword" class="form-input" placeholder="xxxxxxxxxxxxxxxx" autocomplete="off">
+                            <button type="button" class="toggle-password" data-target="setupAppPassword" aria-label="Hiện/ẩn">
+                                <svg class="icon-eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                <svg class="icon-eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                            </button>
+                        </div>
+                        <p class="setup-hint" data-i18n="setup.appPasswordHint">Bật xác minh 2 bước rồi tạo App Password tại myaccount.google.com/apppasswords</p>
+                        <span class="error-message" id="setupAppPasswordError"></span>
+                    </div>
+                </div>
+
+                <!-- Brevo -->
+                <div id="brevoFields" class="hidden">
+                    <div class="form-group">
+                        <label class="field-label" data-i18n="setup.brevoKey">Brevo API key</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="setupBrevoKey" class="form-input" placeholder="xkeysib-..." autocomplete="off">
+                            <button type="button" class="toggle-password" data-target="setupBrevoKey" aria-label="Hiện/ẩn">
+                                <svg class="icon-eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                <svg class="icon-eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                            </button>
+                        </div>
+                        <p class="setup-hint" data-i18n="setup.brevoKeyHint">Lấy tại Brevo > SMTP & API > API Keys. Gửi qua HTTPS nên chạy được cả khi mạng chặn SMTP.</p>
+                        <span class="error-message" id="setupBrevoKeyError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="field-label" data-i18n="setup.senderEmail">Email gửi (đã verify)</label>
+                        <input type="email" id="setupSenderEmail" class="form-input" placeholder="sender@gmail.com" autocomplete="off">
+                        <span class="error-message" id="setupSenderEmailError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="field-label" data-i18n="setup.senderName">Tên người gửi (tùy chọn)</label>
+                        <input type="text" id="setupSenderName" class="form-input" placeholder="CodeAI" autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="form-group mt-1">
+                    <label class="field-label" data-i18n="setup.adminPassword">Mật khẩu quản trị</label>
+                    <input type="password" id="setupAdmin" class="form-input" autocomplete="off">
+                    <p class="setup-hint" id="setupAdminHint"></p>
+                    <span class="error-message" id="setupAdminError"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="setupSaveBtn" data-i18n="setup.save">Lưu cấu hình</button>
+
+                <div class="form-footer">
+                    <p><a href="index.html" class="link" data-i18n="setup.back">Về trang đăng nhập</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/i18n.js"></script>
+    <script src="js/setup.js"></script>
+</body>
+</html>

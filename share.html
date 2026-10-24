@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Shared Project - CodeAI</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/projects.css">
+    <link rel="stylesheet" href="vendor/highlight/highlight-theme.css">
+</head>
+<body class="pc-page ps-page">
+    <div class="pc-shell">
+        <header class="pc-topbar">
+            <div class="pc-topbar-left">
+                <a href="index.html" class="pc-brand">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    <span>CodeAI</span>
+                </a>
+                <span class="pc-badge is-shared" data-i18n="share.link">Link chia sẻ</span>
+            </div>
+            <div class="pc-topbar-right">
+                <button type="button" class="pc-icon-btn pc-theme-toggle" aria-label="Theme">
+                    <svg class="pc-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                    <svg class="pc-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+                </button>
+                <a href="index.html" class="pc-btn pc-btn-ghost" id="shareLoginBtn" data-i18n="share.login">Đăng nhập</a>
+            </div>
+        </header>
+
+        <main class="ps-main">
+            <section class="ps-loading" id="shareLoading">
+                <div class="pc-spinner"></div>
+                <p data-i18n="share.loading">Đang tải dự án được chia sẻ...</p>
+            </section>
+
+            <section class="ps-error hidden" id="shareError">
+                <div class="pc-empty-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+                </div>
+                <h1 data-i18n="share.invalid.title">Link không còn hiệu lực</h1>
+                <p data-i18n="share.invalid.desc">Link chia sẻ đã hết hạn, bị thu hồi hoặc dự án đã được lưu trữ.</p>
+                <a href="index.html" class="pc-btn pc-btn-primary" data-i18n="share.openApp">Mở CodeAI</a>
+            </section>
+
+            <section class="ps-content hidden" id="shareContent">
+                <div class="ps-head">
+                    <div>
+                        <h1 id="sharedTitle"></h1>
+                        <p class="pd-description" id="sharedDescription"></p>
+                        <div class="pd-meta">
+                            <span class="pc-badge is-public" id="sharedBadge">PUBLIC</span>
+                            <span id="sharedOwner"></span>
+                            <span id="sharedFileCount"></span>
+                            <span id="sharedSize"></span>
+                            <span class="ps-readonly" data-i18n="share.readonly">Chỉ xem · Không thể sửa</span>
+                        </div>
+                    </div>
+                    <button type="button" class="pc-btn pc-btn-primary" id="shareZipBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        <span data-i18n="share.download.zip">Tải ZIP</span>
+                    </button>
+                </div>
+
+                <div class="ps-file-tabs" id="sharedFileTabs"></div>
+
+                <div class="ps-viewer">
+                    <div class="pd-viewer-empty hidden" id="sharedViewerEmpty">
+                        <div class="pc-empty-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                        </div>
+                        <p data-i18n="share.emptyFiles">Dự án chưa có file nào.</p>
+                    </div>
+                    <div class="pd-viewer-content" id="sharedViewerContent">
+                    <div class="pd-file-toolbar">
+                        <div class="pd-file-title">
+                            <strong id="sharedFileLabel"></strong>
+                            <span class="pc-badge" id="sharedFileLanguage"></span>
+                        </div>
+                        <div class="pd-file-actions">
+                            <button type="button" class="pc-btn pc-btn-ghost pc-btn-small" id="sharedCopyBtn" data-i18n="share.copy">Copy code</button>
+                            <button type="button" class="pc-btn pc-btn-ghost pc-btn-small" id="sharedDownloadBtn" data-i18n="share.file.download">Tải file</button>
+                        </div>
+                    </div>
+                    <div class="pd-file-meta">
+                        <span id="sharedFileLines"></span>
+                        <span id="sharedFileSize"></span>
+                        <span id="sharedUpdated"></span>
+                    </div>
+                    <div class="pc-code-scroll chat-code" id="sharedCodeScroll">
+                        <pre class="pc-line-numbers" id="sharedLineNumbers"></pre>
+                        <pre class="pc-code"><code class="hljs" id="sharedCode"></code></pre>
+                    </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/projects-common.js"></script>
+    <script src="js/project-ws.js"></script>
+    <script src="vendor/highlight/highlight.min.js"></script>
+    <script src="js/share.js"></script>
+</body>
+</html>
+

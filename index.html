@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeAI</title>
+    <script>try{if(localStorage.getItem('codeai_theme')==='dark')document.documentElement.classList.add('theme-dark');}catch(e){}</script>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/hall.css">
+    <link rel="stylesheet" href="css/account.css">
+</head>
+<body>
+
+    <!-- ==========================================
+         MÀN HÌNH ĐĂNG NHẬP / ĐĂNG KÝ / XÁC THỰC
+         ========================================== -->
+    <div id="authScreen" class="container hidden">
+        <div class="flip-card" id="flipCard">
+            <div class="flip-card-inner">
+
+                <!-- Mặt trước: Login -->
+                <div class="flip-card-front">
+                    <div class="card-content">
+                        <div class="logo">
+                            <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                            <h1>CodeAI</h1>
+                        </div>
+
+                        <div class="welcome-text">
+                            <h2 data-i18n="auth.login.title">Chào mừng trở lại</h2>
+                            <p data-i18n="auth.login.subtitle">Đăng nhập để tiếp tục code</p>
+                        </div>
+
+                        <form id="loginForm" class="auth-form" novalidate>
+                            <div class="form-group">
+                                <div class="input-wrapper">
+                                    <input type="text" id="loginUsername" class="form-input" data-i18n-placeholder="auth.username" placeholder="Tên đăng nhập" autocomplete="username">
+                                </div>
+                                <span class="error-message" id="loginUsernameError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="input-wrapper">
+                                    <input type="password" id="loginPassword" class="form-input" data-i18n-placeholder="auth.password" placeholder="Mật khẩu" autocomplete="current-password">
+                                    <button type="button" class="toggle-password" data-target="loginPassword" aria-label="Hiện/ẩn mật khẩu">
+                                        <svg class="icon-eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                        <svg class="icon-eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                                    </button>
+                                </div>
+                                <span class="error-message" id="loginPasswordError"></span>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" data-i18n="auth.login.btn">Đăng nhập</button>
+
+                            <div class="form-footer">
+                                <p><span data-i18n="auth.login.footer">Chưa có tài khoản?</span>
+                                    <a href="#" id="showRegister" class="link" data-i18n="auth.register.link">Đăng ký</a>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Mặt sau: Register / Verify -->
+                <div class="flip-card-back">
+                    <div class="card-content">
+
+                        <!-- Bước 1: Đăng ký -->
+                        <div id="registerView">
+                            <div class="logo">
+                                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                                <h1>CodeAI</h1>
+                            </div>
+
+                            <div class="welcome-text">
+                                <h2 data-i18n="auth.register.title">Tạo tài khoản</h2>
+                                <p data-i18n="auth.register.subtitle">Tham gia và bắt đầu code</p>
+                            </div>
+
+                            <form id="registerForm" class="auth-form" novalidate>
+                                <div class="form-group">
+                                    <div class="input-wrapper">
+                                        <input type="text" id="registerUsername" class="form-input" data-i18n-placeholder="auth.username" placeholder="Tên đăng nhập" autocomplete="username">
+                                    </div>
+                                    <span class="error-message" id="registerUsernameError"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="input-wrapper">
+                                        <input type="email" id="registerEmail" class="form-input" data-i18n-placeholder="auth.gmail" placeholder="Gmail (@gmail.com)" autocomplete="email">
+                                    </div>
+                                    <span class="error-message" id="registerEmailError"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="input-wrapper">
+                                        <input type="password" id="registerPassword" class="form-input" data-i18n-placeholder="auth.password" placeholder="Mật khẩu" autocomplete="new-password">
+                                        <button type="button" class="toggle-password" data-target="registerPassword" aria-label="Hiện/ẩn mật khẩu">
+                                            <svg class="icon-eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                            <svg class="icon-eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                                        </button>
+                                    </div>
+                                    <span class="error-message" id="registerPasswordError"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="input-wrapper">
+                                        <input type="password" id="registerConfirmPassword" class="form-input" data-i18n-placeholder="auth.confirmPassword" placeholder="Nhập lại mật khẩu" autocomplete="new-password">
+                                        <button type="button" class="toggle-password" data-target="registerConfirmPassword" aria-label="Hiện/ẩn mật khẩu">
+                                            <svg class="icon-eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                            <svg class="icon-eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                                        </button>
+                                    </div>
+                                    <span class="error-message" id="registerConfirmPasswordError"></span>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary" data-i18n="auth.register.btn">Đăng ký</button>
+
+                                <div class="form-footer">
+                                    <p><span data-i18n="auth.register.footer">Đã có tài khoản?</span>
+                                        <a href="#" id="showLogin" class="link" data-i18n="auth.login.link">Đăng nhập</a>
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Bước 2: Xác thực OTP -->
+                        <div id="verifyView" class="hidden">
+                            <div class="logo">
+                                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                                <h1>CodeAI</h1>
+                            </div>
+
+                            <div class="welcome-text">
+                                <h2 data-i18n="auth.verify.title">Xác thực Email</h2>
+                                <p><span data-i18n="auth.verify.subtitle">Mã 6 số đã được gửi tới</span><br><strong id="verifyEmail"></strong></p>
+                            </div>
+
+                            <form id="verifyForm" class="auth-form" novalidate>
+                                <div class="otp-boxes">
+                                    <input type="text" class="otp-box" inputmode="numeric" maxlength="1" autocomplete="one-time-code">
+                                    <input type="text" class="otp-box" inputmode="numeric" maxlength="1">
+                                    <input type="text" class="otp-box" inputmode="numeric" maxlength="1">
+                                    <input type="text" class="otp-box" inputmode="numeric" maxlength="1">
+                                    <input type="text" class="otp-box" inputmode="numeric" maxlength="1">
+                                    <input type="text" class="otp-box" inputmode="numeric" maxlength="1">
+                                </div>
+                                <span class="error-message" id="verifyCodeError"></span>
+
+                                <button type="submit" class="btn btn-primary" data-i18n="auth.verify.btn">Xác thực</button>
+
+                                <div class="form-footer">
+                                    <p><a href="#" id="resendCode" class="link" data-i18n="auth.verify.resend">Gửi lại mã</a></p>
+                                    <p class="mt-1"><a href="#" id="backToRegister" class="link" data-i18n="auth.verify.back">Quay lại</a></p>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <a href="setup.html" class="setup-link" data-i18n="setup.title">Cấu hình gửi mail</a>
+    </div>
+
+    <!-- ==========================================
+         MÀN HÌNH SẢNH (HUB)
+         ========================================== -->
+    <div id="hallScreen" class="hall hidden">
+
+        <!-- Thanh 1 -->
+        <header class="topbar">
+            <button type="button" id="sidebarToggle" class="icon-btn" aria-label="Mở thanh công cụ">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+
+            <div class="topbar-right">
+                <button type="button" class="icon-btn theme-toggle" data-i18n-title="editor.theme.toggle" aria-label="Toggle theme">
+                    <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                    <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+                </button>
+                <div class="account-menu">
+                    <button type="button" id="accountSlot" class="account-slot" data-i18n="hall.account">Tài khoản</button>
+                    <div id="accountDropdown" class="account-dropdown hidden">
+                        <button type="button" id="menuAccountSettings" class="dropdown-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                            <span data-i18n="menu.account_settings">Cài đặt tài khoản</span>
+                        </button>
+                        <button type="button" id="menuLogout" class="dropdown-item danger">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                            <span data-i18n="menu.logout">Đăng xuất</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="brand">
+                    <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    <span class="brand-name">CodeAI</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Thanh 2 (sidebar overlay) -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-title" data-i18n="hall.tools">TOOLS</div>
+            <nav class="sidebar-nav" id="sidebarNav"></nav>
+            <button type="button" id="sidebarAccount" class="sidebar-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span data-i18n="hall.account">Tài khoản</span>
+            </button>
+            <button type="button" id="logoutBtn" class="logout-btn" data-i18n="hall.logout">Đăng xuất</button>
+        </aside>
+        <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
+        <!-- Ô tools ở giữa -->
+        <main class="hall-main">
+            <div class="tools-grid" id="toolsGrid"></div>
+        </main>
+
+    </div>
+
+    <!-- ==========================================
+         MÀN HÌNH TÀI KHOẢN
+         ========================================== -->
+    <div id="accountScreen" class="account-screen hidden">
+        <header class="topbar">
+            <button type="button" id="accBack" class="icon-btn" aria-label="Về sảnh">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            </button>
+            <span class="account-title" data-i18n="menu.account_settings">Cài đặt tài khoản</span>
+            <button type="button" class="icon-btn theme-toggle" data-i18n-title="editor.theme.toggle" aria-label="Toggle theme">
+                <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+            </button>
+            <div class="brand">
+                <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                <span class="brand-name">CodeAI</span>
+            </div>
+        </header>
+
+        <main class="account-main">
+            <div class="account-tabs">
+                <button type="button" class="acc-tab active" data-tab="profile" data-i18n="acc.tab.profile">Hồ sơ</button>
+                <button type="button" class="acc-tab" data-tab="security" data-i18n="acc.tab.security">Bảo mật</button>
+                <button type="button" class="acc-tab" data-tab="other" data-i18n="acc.tab.other">Cài đặt khác</button>
+            </div>
+
+            <div class="account-panels">
+                <!-- Hồ sơ -->
+                <section id="panel-profile" class="acc-panel active">
+                    <div class="panel-card">
+                        <div class="avatar-row">
+                            <div class="avatar-preview" id="avatarPreview"></div>
+                            <div class="avatar-actions">
+                                <input type="file" id="avatarInput" accept="image/*" hidden>
+                                <button type="button" id="changePhotoBtn" class="btn-outline" data-i18n="acc.profile.changePhoto">Đổi ảnh</button>
+                                <button type="button" id="removePhotoBtn" class="btn-outline danger" data-i18n="acc.profile.removePhoto">Xóa ảnh</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="field-label" data-i18n="acc.profile.username">Tên đăng nhập</label>
+                            <input type="text" id="accUsername" class="form-input" maxlength="20" autocomplete="username">
+                            <span class="error-message" id="accUsernameError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="field-label" data-i18n="acc.profile.displayName">Tên hiển thị</label>
+                            <input type="text" id="accDisplayName" class="form-input" maxlength="40">
+                            <span class="error-message" id="accDisplayNameError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="field-label" data-i18n="acc.profile.bio">Giới thiệu</label>
+                            <textarea id="accBio" class="form-input" rows="4" maxlength="300"></textarea>
+                            <span class="error-message" id="accBioError"></span>
+                        </div>
+
+                        <button type="button" id="saveProfileBtn" class="btn btn-primary" data-i18n="acc.profile.save">Lưu</button>
+                    </div>
+                </section>
+
+                <!-- Bảo mật -->
+                <section id="panel-security" class="acc-panel">
+                    <div class="panel-card">
+                        <h3 class="panel-title" data-i18n="acc.security.email">Đổi Gmail</h3>
+                        <div class="form-group">
+                            <label class="field-label" data-i18n="acc.security.newEmail">Gmail mới</label>
+                            <div class="id-row">
+                                <input type="email" id="accNewEmail" class="form-input" placeholder="new@gmail.com">
+                                <button type="button" id="sendEmailCodeBtn" class="btn-outline" data-i18n="acc.security.sendCode">Gửi mã</button>
+                            </div>
+                            <span class="error-message" id="accNewEmailError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="field-label" data-i18n="acc.security.code">Mã xác thực</label>
+                            <input type="text" id="accEmailCode" class="form-input" inputmode="numeric" maxlength="6" placeholder="______">
+                            <span class="error-message" id="accEmailCodeError"></span>
+                        </div>
+                        <button type="button" id="confirmEmailBtn" class="btn btn-primary" data-i18n="acc.security.confirmChange">Xác nhận đổi</button>
+                    </div>
+
+                    <div class="panel-card mt-2">
+                        <h3 class="panel-title" data-i18n="acc.security.password">Đổi mật khẩu</h3>
+                        <div class="form-group">
+                            <label class="field-label" data-i18n="acc.security.currentPassword">Mật khẩu hiện tại</label>
+                            <input type="password" id="accCurrentPassword" class="form-input">
+                            <span class="error-message" id="accCurrentPasswordError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="field-label" data-i18n="acc.security.newPassword">Mật khẩu mới</label>
+                            <input type="password" id="accNewPassword" class="form-input">
+                            <span class="error-message" id="accNewPasswordError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="field-label" data-i18n="acc.security.confirmNew">Nhập lại mật khẩu mới</label>
+                            <input type="password" id="accConfirmNewPassword" class="form-input">
+                            <span class="error-message" id="accConfirmNewPasswordError"></span>
+                        </div>
+                        <button type="button" id="updatePasswordBtn" class="btn btn-primary" data-i18n="acc.security.updatePassword">Cập nhật mật khẩu</button>
+                    </div>
+                </section>
+
+                <!-- Cài đặt khác -->
+                <section id="panel-other" class="acc-panel">
+                    <div class="panel-card">
+                        <h3 class="panel-title" data-i18n="acc.other.language">Ngôn ngữ</h3>
+                        <div class="lang-options">
+                            <label class="lang-option">
+                                <input type="radio" name="lang" value="vi">
+                                <span>Tiếng Việt</span>
+                            </label>
+                            <label class="lang-option">
+                                <input type="radio" name="lang" value="en">
+                                <span>English</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="panel-card mt-2">
+                        <button type="button" id="accLogoutBtn" class="btn btn-primary" data-i18n="acc.other.logout">Đăng xuất</button>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/account.js"></script>
+    <script src="js/hall.js"></script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+/* ==========================================
+   Account dropdown (topbar)
+   ========================================== */
+
+.account-menu {
+    position: relative;
+}
+
+.account-slot {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--primary-blue);
+    padding: 0.4rem 0.9rem;
+    border: 2px solid var(--primary-blue);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.account-slot:hover {
+    background: var(--primary-blue);
+    color: var(--white);
+}
+
+.account-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 210px;
+    background: var(--white);
+    border: 1px solid #e6e9ef;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    padding: 0.35rem;
+    z-index: 40;
+    animation: fadeIn 0.18s ease both;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    padding: 0.6rem 0.7rem;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    text-align: left;
+    transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.dropdown-item svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.dropdown-item:hover {
+    background: rgba(0, 102, 255, 0.08);
+    color: var(--primary-blue);
+}
+
+.dropdown-item.danger {
+    color: var(--error-color);
+}
+
+.dropdown-item.danger:hover {
+    background: rgba(255, 51, 51, 0.08);
+    color: var(--error-color);
+}
+
+/* ==========================================
+   Account screen
+   ========================================== */
+
+.account-screen {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    display: flex;
+    flex-direction: column;
+}
+
+.account-title {
+    flex: 1;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.account-main {
+    flex: 1;
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-xxl);
+}
+
+.account-tabs {
+    display: flex;
+    gap: 0.35rem;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 0.35rem;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--spacing-lg);
+}
+
+.acc-tab {
+    flex: 1;
+    padding: 0.6rem 0.5rem;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.acc-tab:hover {
+    color: var(--primary-blue);
+}
+
+.acc-tab.active {
+    background: var(--primary-blue);
+    color: var(--white);
+}
+
+.acc-panel {
+    display: none;
+}
+
+.acc-panel.active {
+    display: block;
+    animation: fadeIn 0.25s ease both;
+}
+
+.panel-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid #eceef3;
+}
+
+.panel-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-md);
+}
+
+.field-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 0.35rem;
+}
+
+.account-main .form-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.account-main textarea.form-input {
+    resize: vertical;
+    font-family: inherit;
+}
+
+/* ---------- Avatar ---------- */
+
+.avatar-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.avatar-preview {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-light));
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 700;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: var(--shadow-md);
+}
+
+.avatar-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn-outline {
+    padding: 0.55rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary-blue);
+    background: var(--white);
+    border: 2px solid var(--primary-blue);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+}
+
+.btn-outline:hover {
+    background: var(--primary-blue);
+    color: var(--white);
+}
+
+.btn-outline.danger {
+    color: var(--error-color);
+    border-color: var(--error-color);
+}
+
+.btn-outline.danger:hover {
+    background: var(--error-color);
+    color: var(--white);
+}
+
+.btn-outline.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* ---------- Id row ---------- */
+
+.id-row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.id-row .form-input {
+    flex: 1;
+}
+
+/* ---------- Language ---------- */
+
+.lang-options {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.lang-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1rem;
+    border: 2px solid var(--gray-medium);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.lang-option:hover {
+    border-color: var(--primary-blue-light);
+}
+
+.lang-option input {
+    accent-color: var(--primary-blue);
+    cursor: pointer;
+}
+
+.lang-option:has(input:checked) {
+    border-color: var(--primary-blue);
+    background: rgba(0, 102, 255, 0.06);
+}
+
+/* ==========================================
+   Responsive
+   ========================================== */
+
+@media (max-width: 600px) {
+    .account-main {
+        padding: var(--spacing-lg) var(--spacing-md) var(--spacing-xl);
+    }
+
+    .avatar-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .lang-options {
+        flex-direction: column;
+    }
+}

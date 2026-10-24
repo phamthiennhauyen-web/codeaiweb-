@@ -1,0 +1,506 @@
+/* ==========================================
+   Casio Compiler - workspace additions
+   ========================================== */
+
+.casio-compiler-body .casio-workspace-title {
+    padding-left: var(--spacing-md);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ed-text-dim);
+    border-left: 1px solid var(--ed-border);
+    white-space: nowrap;
+}
+
+.casio-toolbar {
+    gap: 0.75rem;
+}
+
+.casio-toolbar-left,
+.casio-toolbar-right {
+    flex-wrap: wrap;
+    row-gap: 0.3rem;
+}
+
+/* The main editor hides toolbar labels; the compiler keeps them visible. */
+.casio-toolbar .ed-btn span {
+    display: inline-flex;
+    align-items: center;
+}
+
+.casio-toolbar-right {
+    margin-left: auto;
+    justify-content: flex-end;
+}
+
+.casio-toolbar .ed-status {
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ---------- Model picker ---------- */
+
+.casio-model-wrap {
+    position: relative;
+    display: inline-flex;
+}
+
+.casio-model-btn b {
+    color: var(--primary-blue);
+    font-weight: 700;
+}
+
+.casio-model-btn b::before {
+    content: ': ';
+    font-weight: 600;
+    color: var(--ed-text-dim);
+}
+
+.casio-chevron {
+    width: 13px !important;
+    height: 13px !important;
+    margin-left: 2px;
+    transition: transform var(--transition-fast);
+}
+
+.casio-model-btn[aria-expanded="true"] .casio-chevron {
+    transform: rotate(180deg);
+}
+
+.casio-model-menu {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    z-index: var(--z-dropdown, 1000);
+    min-width: 190px;
+    padding: 0.3rem;
+    background: var(--ed-bg);
+    border: 1px solid var(--ed-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+}
+
+.casio-model-menu button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    padding: 0.55rem 0.65rem;
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--ed-text);
+    text-align: left;
+    background: transparent;
+    border: none;
+    border-radius: calc(var(--radius-md) - 2px);
+    cursor: pointer;
+}
+
+.casio-model-menu button:hover {
+    background: var(--ed-surface);
+    color: var(--primary-blue);
+}
+
+.casio-check {
+    visibility: hidden;
+    color: var(--primary-blue);
+    font-weight: 800;
+}
+
+.casio-model-menu button.active .casio-check {
+    visibility: visible;
+}
+
+/* ---------- Output pane ---------- */
+
+.casio-output-pane {
+    background: var(--ed-console-bg);
+}
+
+.casio-output-head {
+    height: 38px;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 0.75rem 0 1rem;
+}
+
+.casio-output-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    min-width: 0;
+}
+
+.casio-output-name {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: 'Cascadia Code', 'Consolas', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.03em;
+    color: var(--ed-text);
+    white-space: nowrap;
+}
+
+.casio-output-name::first-letter {
+    color: var(--primary-blue);
+}
+
+.casio-output-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex: 0 0 auto;
+}
+
+.casio-format-seg {
+    display: inline-flex;
+    gap: 2px;
+    padding: 2px;
+    background: var(--ed-bg);
+    border: 1px solid var(--ed-border);
+    border-radius: var(--radius-md);
+}
+
+.casio-format-seg button {
+    padding: 0.18rem 0.55rem;
+    font-family: 'Cascadia Code', 'Consolas', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: var(--ed-text-dim);
+    background: transparent;
+    border: none;
+    border-radius: calc(var(--radius-md) - 3px);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.casio-format-seg button:hover {
+    color: var(--ed-text);
+}
+
+.casio-format-seg button.active {
+    color: #fff;
+    background: var(--primary-blue);
+}
+
+.casio-copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.55rem;
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--ed-text-dim);
+    background: var(--ed-bg);
+    border: 1px solid var(--ed-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.casio-copy-btn:hover {
+    color: var(--primary-blue);
+    border-color: var(--primary-blue-light);
+}
+
+.casio-copy-btn svg {
+    width: 13px;
+    height: 13px;
+}
+
+.casio-output-text {
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: 0;
+    padding: 0.9rem 1rem;
+    overflow: auto;
+    font-family: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.55;
+    tab-size: 4;
+    color: var(--ed-console-text);
+    background: var(--ed-console-bg);
+    white-space: pre;
+    word-break: normal;
+    cursor: text;
+    user-select: text;
+}
+
+.casio-output-text.is-empty {
+    color: var(--ed-text-dim);
+    font-style: italic;
+    white-space: pre-wrap;
+}
+
+.casio-output-text.is-error {
+    color: var(--error-color, #ff4d4d);
+}
+
+.casio-output-text.is-warning {
+    color: #b45309;
+}
+
+html.theme-dark .casio-output-text.is-warning {
+    color: #fbbf24;
+}
+
+/* ---------- Label modal ---------- */
+
+.casio-label-modal {
+    width: min(640px, 100%);
+    max-width: 640px;
+    max-height: 82vh;
+}
+
+.casio-label-sub {
+    margin-top: 2px;
+    font-size: 0.76rem;
+    font-weight: 500;
+    color: var(--ed-text-dim);
+}
+
+.casio-label-toolbar {
+    flex: 0 0 auto;
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--ed-border);
+}
+
+.casio-label-search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 0.7rem;
+    background: var(--ed-surface);
+    border: 1px solid var(--ed-border);
+    border-radius: var(--radius-md);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.casio-label-search:focus-within {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.16);
+}
+
+.casio-label-search svg {
+    width: 15px;
+    height: 15px;
+    flex: 0 0 auto;
+    color: var(--ed-text-dim);
+}
+
+.casio-label-search input {
+    width: 100%;
+    padding: 0.55rem 0;
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: var(--ed-text);
+    background: transparent;
+    border: none;
+    outline: none;
+}
+
+.casio-label-table-wrap {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+}
+
+.casio-label-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+}
+
+.casio-label-table th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 0.55rem 1rem;
+    text-align: left;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ed-text-dim);
+    background: var(--ed-tab-bg);
+    border-bottom: 1px solid var(--ed-border);
+}
+
+.casio-label-table td {
+    padding: 0.45rem 1rem;
+    border-bottom: 1px solid var(--ed-border);
+    color: var(--ed-text);
+}
+
+.casio-label-table tbody tr:hover {
+    background: var(--ed-surface);
+}
+
+.casio-label-table .label-address {
+    width: 34%;
+    font-family: 'Cascadia Code', 'Consolas', monospace;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--primary-blue);
+    white-space: nowrap;
+}
+
+.casio-label-table .label-name {
+    font-family: 'Cascadia Code', 'Consolas', monospace;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.casio-label-table .label-empty {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--ed-text-dim);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1180px) {
+    .casio-toolbar-left,
+    .casio-toolbar-right {
+        gap: 0.25rem;
+    }
+
+    .casio-toolbar .ed-btn {
+        padding: 0.38rem 0.48rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .casio-toolbar .ed-btn span {
+        display: none;
+    }
+
+    .casio-model-btn span,
+    .casio-model-btn .casio-chevron {
+        display: none;
+    }
+
+    .casio-output-head {
+        height: auto;
+        min-height: 38px;
+        flex-wrap: wrap;
+        padding: 0.35rem 0.65rem;
+    }
+
+    .casio-output-heading {
+        width: 100%;
+    }
+}
+
+@media (max-width: 560px) {
+    .casio-workspace-title {
+        display: none;
+    }
+
+    .casio-label-modal {
+        max-height: 88vh;
+    }
+}
+
+/* ---------- Destructive action menu ---------- */
+
+.casio-confirm-menu {
+    position: fixed;
+    z-index: calc(var(--z-modal) + 10);
+    width: min(320px, calc(100vw - 16px));
+    padding: 0.85rem;
+    background: var(--ed-bg);
+    border: 1px solid var(--ed-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+}
+
+.casio-confirm-menu.hidden {
+    display: none;
+}
+
+.casio-confirm-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+}
+
+.casio-confirm-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 24px;
+    height: 24px;
+    margin-top: 1px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #e5484d;
+    background: rgba(229, 72, 77, 0.12);
+    border: 1px solid rgba(229, 72, 77, 0.28);
+    border-radius: 50%;
+}
+
+.casio-confirm-copy {
+    min-width: 0;
+}
+
+.casio-confirm-copy h3 {
+    margin: 0 0 0.25rem;
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: var(--ed-text);
+}
+
+.casio-confirm-copy p {
+    margin: 0;
+    font-size: 0.76rem;
+    line-height: 1.5;
+    color: var(--ed-text-dim);
+    overflow-wrap: anywhere;
+}
+
+.casio-confirm-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.45rem;
+    margin-top: 0.8rem;
+}
+
+.casio-confirm-actions button {
+    padding: 0.4rem 0.7rem;
+    font-family: inherit;
+    font-size: 0.76rem;
+    font-weight: 650;
+    color: var(--ed-text);
+    background: var(--ed-surface);
+    border: 1px solid var(--ed-border);
+    border-radius: calc(var(--radius-md) - 2px);
+    cursor: pointer;
+}
+
+.casio-confirm-actions button:hover {
+    border-color: var(--ed-text-dim);
+}
+
+.casio-confirm-actions button.is-danger {
+    color: #fff;
+    background: #e5484d;
+    border-color: #e5484d;
+}
+
+.casio-confirm-actions button.is-danger:hover {
+    background: #d93d42;
+    border-color: #d93d42;
+}
+
+.casio-confirm-actions button:focus-visible {
+    outline: 2px solid var(--primary-blue);
+    outline-offset: 2px;
+}

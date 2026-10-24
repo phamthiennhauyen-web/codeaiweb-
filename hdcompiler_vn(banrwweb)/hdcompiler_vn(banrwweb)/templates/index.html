@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HD Compiler VN</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    background: #0d1117;
+    color: #c9d1d9;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+header {
+    background: #161b22;
+    border-bottom: 1px solid #30363d;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-shrink: 0;
+}
+header h1 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #58a6ff;
+    letter-spacing: 0.5px;
+}
+header .subtitle {
+    font-size: 12px;
+    color: #8b949e;
+}
+.mode-tabs {
+    display: flex;
+    gap: 0;
+    margin-left: auto;
+}
+.mode-tab {
+    padding: 6px 18px;
+    border: 1px solid #30363d;
+    background: #0d1117;
+    color: #8b949e;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.15s;
+}
+.mode-tab:first-child { border-radius: 6px 0 0 6px; }
+.mode-tab:last-child { border-radius: 0 6px 6px 0; }
+.mode-tab.active {
+    background: #1f6feb;
+    border-color: #1f6feb;
+    color: #fff;
+}
+.mode-tab:hover:not(.active) { background: #21262d; }
+.main {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    gap: 0;
+}
+.panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+.panel:first-child { border-right: 1px solid #30363d; }
+.panel-header {
+    padding: 8px 16px;
+    background: #161b22;
+    border-bottom: 1px solid #30363d;
+    font-size: 12px;
+    font-weight: 600;
+    color: #8b949e;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+.format-select {
+    margin-left: auto;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+}
+#code-editor {
+    flex: 1;
+    width: 100%;
+    border: none;
+    background: #0d1117;
+    color: #c9d1d9;
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 16px;
+    resize: none;
+    outline: none;
+    tab-size: 4;
+}
+#code-editor::placeholder { color: #484f58; }
+#output {
+    flex: 1;
+    overflow: auto;
+    padding: 16px;
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+    tab-size: 4;
+}
+#output .stderr { color: #f85149; }
+#output .stdout { color: #7ee787; }
+#output .empty { color: #484f58; font-style: italic; }
+.toolbar {
+    padding: 8px 16px;
+    background: #161b22;
+    border-top: 1px solid #30363d;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
+}
+.btn {
+    padding: 6px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.btn-compile {
+    background: #238636;
+    color: #fff;
+}
+.btn-compile:hover { background: #2ea043; }
+.btn-compile:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-load {
+    background: #21262d;
+    color: #c9d1d9;
+    border: 1px solid #30363d;
+}
+.btn-load:hover { background: #30363d; }
+.status {
+    font-size: 12px;
+    color: #8b949e;
+    margin-left: auto;
+}
+.spacer { flex: 1; }
+@media (max-width: 768px) {
+    .main { flex-direction: column; }
+    .panel:first-child { border-right: none; border-bottom: 1px solid #30363d; }
+    header { flex-wrap: wrap; }
+    .mode-tabs { margin-left: 0; }
+}
+</style>
+</head>
+<body>
+<header>
+    <h1>HD Compiler VN</h1>
+    <span class="subtitle">Casio Assembly Compiler</span>
+    <div class="mode-tabs">
+        <div class="mode-tab active" data-mode="580" onclick="switchMode(this)">580VNX</div>
+        <div class="mode-tab" data-mode="880" onclick="switchMode(this)">880BTG</div>
+    </div>
+</header>
+<div class="main">
+    <div class="panel">
+        <div class="panel-header">
+            <span>Assembly Code</span>
+            <select class="format-select" id="format-select">
+                <option value="hex">Hex</option>
+                <option value="key">Key</option>
+            </select>
+        </div>
+        <textarea id="code-editor" spellcheck="false" placeholder="; Nhập code assembly của bạn ở đây...">org 0xe9e0
+text:
+str "abcd"</textarea>
+        <div class="toolbar">
+            <button class="btn btn-compile" id="compile-btn" onclick="compile()">Compile</button>
+            <button class="btn btn-load" onclick="loadExample()">Example</button>
+            <span class="status" id="status">Ready</span>
+        </div>
+    </div>
+    <div class="panel">
+        <div class="panel-header">
+            <span>Output</span>
+        </div>
+        <div id="output"><span class="empty">Click "Compile" to build</span></div>
+    </div>
+</div>
+<script>
+let currentMode = '580';
+
+function switchMode(el) {
+    document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    currentMode = el.dataset.mode;
+}
+
+document.getElementById('code-editor').addEventListener('keydown', function(e) {
+    if (e.key === 'Tab') {
+        e.preventDefault();
+        const start = this.selectionStart;
+        const end = this.selectionEnd;
+        this.value = this.value.substring(0, start) + '    ' + this.value.substring(end);
+        this.selectionStart = this.selectionEnd = start + 4;
+    }
+});
+
+async function compile() {
+    const btn = document.getElementById('compile-btn');
+    const status = document.getElementById('status');
+    const output = document.getElementById('output');
+    const code = document.getElementById('code-editor').value;
+    const fmt = document.getElementById('format-select').value;
+
+    btn.disabled = true;
+    status.textContent = 'Compiling...';
+    output.innerHTML = '';
+
+    try {
+        const res = await fetch('/compile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ mode: currentMode, code, format: fmt })
+        });
+        const data = await res.json();
+
+        let html = '';
+        if (data.stdout) {
+            html += `<span class="stdout">${escapeHtml(data.stdout)}</span>`;
+        }
+        if (data.stderr) {
+            html += `<span class="stderr">${escapeHtml(data.stderr)}</span>`;
+        }
+        if (!data.stdout && !data.stderr) {
+            html = '<span class="empty">No output</span>';
+        }
+        output.innerHTML = html;
+        status.textContent = 'Done';
+    } catch (err) {
+        output.innerHTML = `<span class="stderr">Error: ${escapeHtml(err.message)}</span>`;
+        status.textContent = 'Error';
+    } finally {
+        btn.disabled = false;
+    }
+}
+
+function loadExample() {
+    const examples = {
+        '580': `; 580VNX example
+org 0xe9e0
+text:
+str "hello"`
+,
+        '880': `; 880BTG example
+org 0xe9e0
+text:
+str "hello"`
+    };
+    document.getElementById('code-editor').value = examples[currentMode] || examples['580'];
+}
+
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+</script>
+</body>
+</html>

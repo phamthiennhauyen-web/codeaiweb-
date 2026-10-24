@@ -1,0 +1,320 @@
+/* ==========================================
+   Hall Screen Layout
+   ========================================== */
+
+.hall {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    display: flex;
+    flex-direction: column;
+}
+
+/* ==========================================
+   Thanh 1 - Topbar
+   ========================================== */
+
+.topbar {
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--spacing-lg);
+    background: var(--white);
+    box-shadow: var(--shadow-sm);
+    border-bottom: 1px solid #e6e9ef;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+
+.icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.icon-btn:hover {
+    background: rgba(0, 102, 255, 0.1);
+    color: var(--primary-blue);
+}
+
+.icon-btn svg {
+    width: 22px;
+    height: 22px;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+}
+
+.account-slot {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    padding: 0.35rem 0.75rem;
+    border: 1px dashed var(--gray-medium);
+    border-radius: var(--radius-md);
+    cursor: default;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.brand-icon {
+    width: 26px;
+    height: 26px;
+    color: var(--primary-blue);
+}
+
+.brand-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ==========================================
+   Thanh 2 - Sidebar
+   ========================================== */
+
+.sidebar {
+    position: fixed;
+    top: 54px;
+    left: 0;
+    width: 260px;
+    height: calc(100vh - 54px);
+    background: var(--white);
+    border-right: 1px solid #e6e9ef;
+    box-shadow: var(--shadow-lg);
+    padding: var(--spacing-lg) var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(-105%);
+    transition: transform var(--transition-medium);
+    z-index: 30;
+}
+
+.sidebar.open {
+    transform: translateX(0);
+}
+
+.sidebar-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--text-light);
+    padding: 0 var(--spacing-sm) var(--spacing-sm);
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 0.85rem;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    transition: background var(--transition-fast), color var(--transition-fast);
+    width: 100%;
+}
+
+.sidebar-item:hover {
+    background: rgba(0, 102, 255, 0.08);
+    color: var(--primary-blue);
+}
+
+.sidebar-item svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.sidebar-item .coming {
+    margin-left: auto;
+    font-size: 0.65rem;
+    color: var(--text-light);
+    border: 1px solid var(--gray-medium);
+    border-radius: 999px;
+    padding: 1px 6px;
+}
+
+.logout-btn {
+    margin-top: var(--spacing-md);
+    padding: 0.7rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--error-color);
+    background: var(--white);
+    border: 2px solid var(--error-color);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.logout-btn:hover {
+    background: var(--error-color);
+    color: var(--white);
+}
+
+/* Backdrop */
+.sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(17, 24, 39, 0.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-medium);
+    z-index: 25;
+}
+
+.sidebar-backdrop.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ==========================================
+   Ô tools ở giữa
+   ========================================== */
+
+.hall-main {
+    flex: 1;
+    padding: var(--spacing-xxl) var(--spacing-xl);
+    display: flex;
+    justify-content: center;
+}
+
+.tools-grid {
+    width: 100%;
+    max-width: 1000px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--spacing-lg);
+    align-content: start;
+}
+
+.tool-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: var(--spacing-lg);
+    background: var(--white);
+    border: 1px solid #e6e9ef;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    text-align: left;
+    transition: transform var(--transition-medium), box-shadow var(--transition-medium), border-color var(--transition-medium);
+    animation: fadeIn 0.4s ease both;
+}
+
+.tool-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-blue-light);
+}
+
+.tool-card .tool-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border-radius: var(--radius-md);
+    background: rgba(0, 102, 255, 0.1);
+    color: var(--primary-blue);
+}
+
+.tool-card .tool-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.tool-card .tool-name {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.tool-card .tool-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.tool-card .tool-badge {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    font-size: 0.65rem;
+    color: var(--text-light);
+    border: 1px solid var(--gray-medium);
+    border-radius: 999px;
+    padding: 1px 7px;
+}
+
+/* ==========================================
+   Toast
+   ========================================== */
+
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 32px;
+    transform: translateX(-50%) translateY(20px);
+    background: #1f2937;
+    color: var(--white);
+    padding: 0.65rem 1.1rem;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    transition: opacity var(--transition-medium), transform var(--transition-medium);
+    z-index: 100;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ==========================================
+   Responsive
+   ========================================== */
+
+@media (max-width: 600px) {
+    .hall-main {
+        padding: var(--spacing-xl) var(--spacing-md);
+    }
+
+    .account-slot {
+        display: none;
+    }
+}

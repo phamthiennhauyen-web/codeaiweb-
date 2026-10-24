@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="vi" class="chat-dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat AI — CodeAI</title>
+    <script>try{if(localStorage.getItem('codeai_chat_theme')==='light'){document.documentElement.classList.remove('chat-dark');document.documentElement.classList.add('chat-light');}}catch(e){}</script>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="vendor/highlight/highlight-theme.css">
+    <link rel="stylesheet" href="css/chat.css">
+</head>
+<body class="chat-body">
+    <div id="chatApp" class="chat-app">
+        <header class="chat-topbar">
+            <div class="chat-topbar-left">
+                <button type="button" id="sidebarToggle" class="chat-icon-btn chat-only-mobile" data-i18n-title="chat.sidebar" title="Mở danh sách chat" aria-label="Menu">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
+                <button type="button" id="backBtn" class="chat-icon-btn" data-i18n-title="chat.back" title="Về sảnh" aria-label="Back">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                </button>
+                <a class="chat-brand" href="index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    <span>CodeAI</span>
+                </a>
+                <span class="chat-topbar-divider"></span>
+                <span class="chat-page-title" data-i18n="chat.title">Chat AI</span>
+            </div>
+            <div class="chat-topbar-right">
+                <button type="button" id="settingsBtn" class="chat-icon-btn" data-i18n-title="chat.settings" title="Cài đặt" aria-label="Settings">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6h.08A1.65 1.65 0 0 0 10.09 3.09V3a2 2 0 1 1 4 0v.09A1.65 1.65 0 0 0 15.1 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9v.08A1.65 1.65 0 0 0 20.91 10.09H21a2 2 0 1 1 0 4h-.09A1.65 1.65 0 0 0 19.4 15z"/></svg>
+                </button>
+                <button type="button" id="themeToggle" class="chat-icon-btn" data-i18n-title="chat.theme" title="Đổi giao diện" aria-label="Theme">
+                    <svg class="chat-ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    <svg class="chat-ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                </button>
+                <div class="chat-user-chip" id="chatUserChip">
+                    <span class="chat-user-avatar" id="chatUserAvatar">?</span>
+                    <span class="chat-user-name" id="chatUserName">...</span>
+                </div>
+                <button type="button" id="logoutBtn" class="chat-icon-btn" data-i18n-title="hall.logout" title="Đăng xuất" aria-label="Logout">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <div class="chat-shell">
+            <aside class="chat-sidebar" id="chatSidebar">
+                <div class="chat-sidebar-head">
+                    <button type="button" id="newChatBtn" class="chat-new-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        <span data-i18n="chat.new">Chat mới</span>
+                    </button>
+                </div>
+                <div class="chat-tab-list" id="chatTabList"></div>
+                <div class="chat-sidebar-foot">
+                    <button type="button" id="modelManagerBtn" class="chat-side-action">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/></svg>
+                        <span data-i18n="chat.models.manage">Quản lý model</span>
+                    </button>
+                    <div class="chat-sidebar-model" id="sidebarModelName"></div>
+                </div>
+            </aside>
+            <div class="chat-sidebar-backdrop" id="sidebarBackdrop"></div>
+
+            <main class="chat-main">
+                <section class="chat-messages" id="chatMessages">
+                    <div class="chat-empty" id="chatEmpty">
+                        <div class="chat-empty-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
+                        </div>
+                        <h1 data-i18n="chat.empty.title">Bạn muốn hỏi gì?</h1>
+                        <p data-i18n="chat.empty.subtitle">Chọn model, đính kèm ảnh hoặc file, rồi bắt đầu trò chuyện.</p>
+                        <div class="chat-suggestions" id="chatSuggestions">
+                            <button type="button" class="chat-suggestion" data-prompt-key="chat.suggest.1">
+                                <span data-i18n="chat.suggest.1">Giải thích đoạn code này</span>
+                            </button>
+                            <button type="button" class="chat-suggestion" data-prompt-key="chat.suggest.2">
+                                <span data-i18n="chat.suggest.2">Viết hàm Python kiểm tra số nguyên tố</span>
+                            </button>
+                            <button type="button" class="chat-suggestion" data-prompt-key="chat.suggest.3">
+                                <span data-i18n="chat.suggest.3">Tối ưu câu SQL sau</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chat-message-list" id="messageList"></div>
+                </section>
+
+                <button type="button" id="scrollBottomBtn" class="chat-scroll-bottom hidden" data-i18n-title="chat.scrollBottom" title="Xuống cuối">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+                </button>
+
+                <div class="chat-composer-wrap">
+                    <div class="chat-slash-menu hidden" id="slashMenu" role="listbox" aria-label="Lệnh"></div>
+                    <div class="chat-attachments hidden" id="attachmentList"></div>
+                    <div class="chat-composer" id="composer">
+                        <button type="button" id="attachBtn" class="chat-attach-btn" data-i18n-title="chat.attach" title="Đính kèm tệp" aria-label="Attach">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        </button>
+                        <input type="file" id="attachInput" class="hidden" multiple accept="image/*,.txt,.md,.json,.js,.ts,.py,.java,.c,.cpp,.h,.css,.html,.xml,.yml,.yaml,.csv,.log,.sql,.sh">
+                        <textarea id="promptInput" rows="1" data-i18n-placeholder="chat.placeholder" placeholder="Nhắn cho AI…"></textarea>
+                        <button type="button" id="modelBtn" class="chat-model-btn" data-i18n-title="chat.pickModel" title="Chọn model">
+                            <span class="chat-model-dot"></span>
+                            <span id="modelBtnLabel" data-i18n="chat.noModel">Chọn model</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <button type="button" id="sendBtn" class="chat-send-btn" data-i18n-title="chat.send" title="Gửi" aria-label="Send">
+                            <svg class="chat-ico-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+                            <svg class="chat-ico-stop" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+                        </button>
+                    </div>
+                    <div class="chat-composer-hint">
+                        <span data-i18n="chat.hint.enter">Enter để gửi · Shift + Enter xuống dòng</span>
+                        <span id="composerModelHint"></span>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div id="modelPicker" class="chat-model-picker hidden">
+        <div class="chat-picker-head">
+            <span data-i18n="chat.pickModel">Chọn model</span>
+            <button type="button" id="pickerManage" data-i18n="chat.models.manage">Quản lý model</button>
+        </div>
+        <div class="chat-picker-list" id="pickerList"></div>
+    </div>
+
+    <div id="modelModal" class="chat-modal hidden">
+        <div class="chat-modal-backdrop" data-close="modelModal"></div>
+        <div class="chat-modal-panel chat-model-panel" role="dialog" aria-modal="true">
+            <div class="chat-modal-head">
+                <div>
+                    <h2 data-i18n="chat.models.title">Quản lý model</h2>
+                    <p data-i18n="chat.models.subtitle">Khai báo Base URL, API Key và Model ID của bạn.</p>
+                </div>
+                <button type="button" class="chat-icon-btn chat-close-btn" data-close="modelModal" aria-label="Close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="chat-model-tabs" id="modelTabs">
+                <button type="button" class="active" data-model-tab="singles" data-i18n="chat.models.single">Model trung lập</button>
+                <button type="button" data-model-tab="groups" data-i18n="chat.models.group">Model công lập</button>
+            </div>
+            <div class="chat-model-body">
+                <div class="chat-model-pane" id="modelTabSingles">
+                    <div class="chat-model-toolbar">
+                        <button type="button" id="addSingleBtn" class="chat-small-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            <span data-i18n="chat.models.addSingle">Thêm model</span>
+                        </button>
+                    </div>
+                    <div class="chat-model-list" id="singleList"></div>
+                </div>
+                <div class="chat-model-pane hidden" id="modelTabGroups">
+                    <div class="chat-model-toolbar">
+                        <button type="button" id="addGroupBtn" class="chat-small-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            <span data-i18n="chat.models.addGroup">Thêm nhóm</span>
+                        </button>
+                    </div>
+                    <div class="chat-model-list" id="groupList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modelEditModal" class="chat-modal hidden">
+        <div class="chat-modal-backdrop" data-close="modelEditModal"></div>
+        <div class="chat-modal-panel chat-form-panel" role="dialog" aria-modal="true">
+            <div class="chat-modal-head">
+                <h2 id="modelEditTitle" data-i18n="chat.models.formSingleAdd">Thêm model</h2>
+                <button type="button" class="chat-icon-btn chat-close-btn" data-close="modelEditModal" aria-label="Close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <form id="modelForm" novalidate>
+                <input type="hidden" id="modelEditKind">
+                <input type="hidden" id="modelEditId">
+                <input type="hidden" id="modelEditGroupId">
+                <label class="chat-field">
+                    <span data-i18n="chat.field.name">Tên hiển thị</span>
+                    <input type="text" id="modelName" maxlength="60" data-i18n-placeholder="chat.field.namePh" placeholder="VD: GPT-4o">
+                </label>
+                <label class="chat-field">
+                    <span data-i18n="chat.field.baseUrl">Base URL</span>
+                    <input type="text" id="modelBaseUrl" spellcheck="false" data-i18n-placeholder="chat.field.baseUrlPh" placeholder="https://api.openai.com/v1">
+                </label>
+                <label class="chat-field">
+                    <span data-i18n="chat.field.apiKey">API Key</span>
+                    <div class="chat-password-wrap">
+                        <input type="password" id="modelApiKey" spellcheck="false" autocomplete="off" data-i18n-placeholder="chat.field.apiKeyPh" placeholder="sk-...">
+                        <button type="button" id="toggleKey" class="chat-key-toggle" data-i18n-title="chat.field.showKey" title="Hiện / ẩn">
+                            <svg class="chat-ico-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            <svg class="chat-ico-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        </button>
+                    </div>
+                </label>
+                <label class="chat-field">
+                    <span data-i18n="chat.field.modelId">Model ID</span>
+                    <div class="chat-inline-row">
+                        <input type="text" id="modelModelId" spellcheck="false" list="modelIdOptions" data-i18n-placeholder="chat.field.modelIdPh" placeholder="gpt-4o-mini">
+                        <button type="button" id="fetchModelsBtn" class="chat-small-btn" data-i18n="chat.models.fetch">Tải danh sách</button>
+                    </div>
+                    <datalist id="modelIdOptions"></datalist>
+                </label>
+                <details class="chat-advanced">
+                    <summary data-i18n="chat.models.advanced">Nâng cao</summary>
+                    <label class="chat-field">
+                        <span data-i18n="chat.field.authMode">Kiểu xác thực</span>
+                        <select id="modelAuthMode">
+                            <option value="bearer" data-i18n="chat.field.authBearer">Bearer (mặc định)</option>
+                            <option value="api-key" data-i18n="chat.field.authApiKey">api-key</option>
+                            <option value="x-api-key" data-i18n="chat.field.authXApiKey">x-api-key</option>
+                            <option value="none" data-i18n="chat.field.authNone">Không gửi key</option>
+                        </select>
+                    </label>
+                    <label class="chat-field">
+                        <span data-i18n="chat.field.extraHeaders">Extra headers (JSON)</span>
+                        <textarea id="modelExtraHeaders" rows="3" spellcheck="false" placeholder='{"HTTP-Referer":"https://codeai.local"}'></textarea>
+                    </label>
+                </details>
+                <div class="chat-form-error hidden" id="modelFormError"></div>
+                <div class="chat-form-actions">
+                    <button type="button" class="chat-btn ghost" data-close="modelEditModal" data-i18n="chat.cancel">Hủy</button>
+                    <button type="submit" class="chat-btn primary" id="modelSubmitBtn" data-i18n="chat.save">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="settingsModal" class="chat-modal hidden">
+        <div class="chat-modal-backdrop" data-close="settingsModal"></div>
+        <div class="chat-modal-panel chat-settings-panel" role="dialog" aria-modal="true">
+            <div class="chat-modal-head">
+                <div>
+                    <h2 data-i18n="chat.settings">Cài đặt</h2>
+                    <p data-i18n="chat.settings.subtitle">Tùy chỉnh giao diện và cách hiển thị câu trả lời.</p>
+                </div>
+                <button type="button" class="chat-icon-btn chat-close-btn" data-close="settingsModal" aria-label="Close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="chat-settings-body">
+                <div class="chat-settings-group">
+                    <div class="chat-settings-label">
+                        <strong data-i18n="chat.set.theme">Giao diện</strong>
+                        <span data-i18n="chat.set.themeHint">Chọn chế độ sáng hoặc tối</span>
+                    </div>
+                    <div class="chat-theme-seg" id="settingsTheme">
+                        <button type="button" data-chat-theme="light">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/></svg>
+                            <span data-i18n="chat.set.light">Sáng</span>
+                        </button>
+                        <button type="button" data-chat-theme="dark">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                            <span data-i18n="chat.set.dark">Tối</span>
+                        </button>
+                    </div>
+                </div>
+                <label class="chat-switch-row">
+                    <span class="chat-switch-text">
+                        <strong data-i18n="chat.set.thinking">Hiện suy nghĩ</strong>
+                        <span data-i18n="chat.set.thinkingHint">Xem dòng suy nghĩ của model khi nó hỗ trợ</span>
+                    </span>
+                    <input type="checkbox" id="showThinkingToggle">
+                    <span class="chat-switch" aria-hidden="true"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmModal" class="chat-modal hidden">
+        <div class="chat-modal-backdrop" data-close="confirmModal"></div>
+        <div class="chat-modal-panel chat-confirm-panel" role="dialog" aria-modal="true">
+            <h3 id="confirmTitle"></h3>
+            <p id="confirmText"></p>
+            <div class="chat-form-actions">
+                <button type="button" class="chat-btn ghost" id="confirmCancel" data-i18n="chat.cancel">Hủy</button>
+                <button type="button" class="chat-btn danger" id="confirmOk" data-i18n="chat.delete">Xóa</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="chatToast" class="chat-toast hidden"></div>
+
+    <script src="js/i18n.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="vendor/highlight/highlight.min.js"></script>
+    <script src="js/chat.js"></script>
+</body>
+</html>

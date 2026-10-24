@@ -1,0 +1,259 @@
+/* ==========================================
+   CSS Reset & Base Styles
+   ========================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: #f5f5f5;
+}
+
+/* ==========================================
+   CSS Variables
+   ========================================== */
+
+:root {
+    /* Colors */
+    --primary-blue: #0066ff;
+    --primary-blue-dark: #0052cc;
+    --primary-blue-light: #3385ff;
+    
+    --white: #ffffff;
+    --black: #000000;
+    --gray-light: #f5f5f5;
+    --gray-medium: #cccccc;
+    --gray-dark: #666666;
+    
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --text-light: #999999;
+    
+    --error-color: #ff3333;
+    --success-color: #00cc66;
+    
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-xxl: 3rem;
+    
+    /* Border Radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.3s ease;
+    --transition-slow: 0.6s ease;
+    
+    /* Animations */
+    --anim-rotation-speed: 3s;
+    --anim-rotation-fast: 2s;
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
+    --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.18);
+    
+    /* Z-index */
+    --z-base: 1;
+    --z-overlay: 10;
+    --z-modal: 100;
+    --z-tooltip: 1000;
+}
+
+/* ==========================================
+   Utility Classes
+   ========================================== */
+
+.hidden {
+    display: none !important;
+}
+
+.visible {
+    display: block !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mt-1 { margin-top: var(--spacing-md); }
+.mt-2 { margin-top: var(--spacing-lg); }
+.mt-3 { margin-top: var(--spacing-xl); }
+
+.mb-1 { margin-bottom: var(--spacing-md); }
+.mb-2 { margin-bottom: var(--spacing-lg); }
+.mb-3 { margin-bottom: var(--spacing-xl); }
+
+/* ==========================================
+   Animation Keyframes
+   ========================================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(48px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-48px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideOutLeft {
+    from { opacity: 1; transform: translateX(0); }
+    to   { opacity: 0; transform: translateX(-48px); }
+}
+
+@keyframes slideOutRight {
+    from { opacity: 1; transform: translateX(0); }
+    to   { opacity: 0; transform: translateX(48px); }
+}
+
+.slide-in-right {
+    animation: slideInRight 0.38s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.38s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.slide-out-left {
+    animation: slideOutLeft 0.34s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.slide-out-right {
+    animation: slideOutRight 0.34s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* ==========================================
+   Dark theme (global)
+   ========================================== */
+
+html.theme-dark {
+    --white: #1e1e1e;
+    --gray-light: #121212;
+    --gray-medium: #3a3a3a;
+    --gray-dark: #b0b0b0;
+    --text-primary: #e6e6e6;
+    --text-secondary: #b0b0b0;
+    --text-light: #8a8a8a;
+    color-scheme: dark;
+}
+
+html.theme-dark body {
+    background: #121212;
+    color: var(--text-primary);
+}
+
+html.theme-dark .hall,
+html.theme-dark .container,
+html.theme-dark .account-screen,
+html.theme-dark .setup-wrap {
+    background: linear-gradient(135deg, #141922 0%, #1b2430 100%);
+}
+
+html.theme-dark .topbar,
+html.theme-dark .sidebar,
+html.theme-dark .tool-card,
+html.theme-dark .account-dropdown,
+html.theme-dark .panel-card {
+    border-color: #333333;
+}
+
+html.theme-dark .setup-link {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+html.theme-dark .setup-link:hover {
+    background: rgba(255, 255, 255, 0.14);
+}
+
+/* Giữ chữ trắng trên nền màu */
+html.theme-dark .toast,
+html.theme-dark .avatar-preview,
+html.theme-dark .acc-tab.active,
+html.theme-dark .account-slot:hover,
+html.theme-dark .logout-btn:hover,
+html.theme-dark .btn-primary:hover,
+html.theme-dark .btn-outline:hover,
+html.theme-dark .btn-outline.danger:hover {
+    color: #ffffff;
+}
+
+html.theme-dark .btn-primary::before {
+    opacity: 0;
+}
+
+/* Theme toggle button icons */
+.ico-sun { display: none; }
+html.theme-dark .ico-sun { display: block; }
+html.theme-dark .ico-moon { display: none; }

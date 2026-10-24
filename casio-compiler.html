@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casio Compiler - CodeAI</title>
+    <script>try{if(localStorage.getItem('codeai_theme')==='dark')document.documentElement.classList.add('theme-dark');}catch(e){}</script>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/editor.css">
+    <link rel="stylesheet" href="css/casio-compiler.css">
+</head>
+<body class="editor-body casio-compiler-body">
+    <header class="editor-header">
+        <div class="editor-header-left">
+            <a href="casio.html" class="editor-home" data-i18n="casio.backTools">Casio tools</a>
+            <div class="editor-logo">
+                <svg class="editor-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                <span>CodeAI</span>
+            </div>
+            <span class="casio-workspace-title" data-i18n="casio.workspaceTitle">Casio Compiler</span>
+        </div>
+        <div class="editor-actions">
+            <span class="editor-user" id="userName">...</span>
+            <button type="button" id="logoutBtn" class="editor-logout" data-i18n="editor.logout">Đăng xuất</button>
+        </div>
+    </header>
+
+    <div class="editor-toolbar casio-toolbar">
+        <div class="editor-toolbar-left casio-toolbar-left">
+            <button type="button" id="runBtn" class="ed-btn ed-btn-run">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <span id="runLabel" data-i18n="editor.run">Chạy</span>
+            </button>
+            <button type="button" id="copyCodeBtn" class="ed-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span data-i18n="editor.copyCode">Sao chép code</span>
+            </button>
+            <button type="button" id="clearCodeBtn" class="ed-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/></svg>
+                <span data-i18n="editor.clearCode">Xóa hết code</span>
+            </button>
+
+            <div class="casio-model-wrap">
+                <button type="button" id="modelBtn" class="ed-btn casio-model-btn" aria-haspopup="menu" aria-expanded="false">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8" y2="11"/><line x1="12" y1="11" x2="12" y2="11"/><line x1="16" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="8" y2="15"/><line x1="12" y1="15" x2="12" y2="15"/><line x1="16" y1="15" x2="16" y2="15"/></svg>
+                    <span><span data-i18n="casio.model">Model</span><b id="casioModelName">fx-580VN X</b></span>
+                    <svg class="casio-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="casio-model-menu hidden" id="modelMenu" role="menu">
+                    <button type="button" data-model="580" role="menuitem">
+                        <span>fx-580VN X</span>
+                        <span class="casio-check">✓</span>
+                    </button>
+                    <button type="button" data-model="880" role="menuitem">
+                        <span>fx-880BTG</span>
+                        <span class="casio-check">✓</span>
+                    </button>
+                </div>
+            </div>
+
+            <button type="button" id="labelBtn" class="ed-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0l-7.2-7.2A2 2 0 0 1 3 12V5a2 2 0 0 1 2-2h7a2 2 0 0 1 1.4.6l7.2 7.2a2 2 0 0 1 0 2.6z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>
+                <span data-i18n="casio.label">Label</span>
+            </button>
+        </div>
+
+        <div class="editor-toolbar-right casio-toolbar-right">
+            <span class="ed-status" id="runStatus"></span>
+            <button type="button" id="saveBtn" class="ed-btn" data-i18n-title="editor.saveTab">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                <span data-i18n="editor.saveTab">Lưu tab</span>
+            </button>
+            <button type="button" id="openTabBtn" class="ed-btn" data-i18n-title="editor.openTab">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+                <span data-i18n="editor.openTab">Mở tab</span>
+            </button>
+            <button type="button" id="openBtn" class="ed-btn" data-i18n-title="editor.openFile">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                <span data-i18n="editor.openFile">Mở file</span>
+            </button>
+            <button type="button" id="downloadBtn" class="ed-btn" data-i18n-title="editor.download">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><polyline points="7 10 12 15 17 10"/><path d="M5 21h14"/></svg>
+                <span data-i18n="editor.download">Tải xuống</span>
+            </button>
+            <button type="button" id="settingsBtn" class="ed-btn ed-btn-icon" data-i18n-title="editor.settings">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82A1.65 1.65 0 0 0 3.09 14H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.14.37.4.69.73.91H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="editor-view" id="casioView">
+        <main class="editor-workspace" id="workspace">
+            <section class="pane pane-code" id="paneCode">
+                <div class="pane-tabs" id="tabBar">
+                    <button type="button" class="tab-add" id="tabAdd" data-i18n-title="editor.newTab">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                    </button>
+                </div>
+                <div class="monaco-host" id="monacoHost"></div>
+            </section>
+
+            <div class="splitter" id="splitter"></div>
+
+            <section class="pane pane-console casio-output-pane">
+                <div class="console-head casio-output-head">
+                    <div class="casio-output-heading">
+                        <span class="casio-output-name">&lt;&gt; <span data-i18n="casio.output">Output</span></span>
+                        <span class="console-state" id="outputMeta"></span>
+                    </div>
+                    <div class="casio-output-actions">
+                        <div class="casio-format-seg" id="formatSeg">
+                            <button type="button" data-format="hex">HEX</button>
+                            <button type="button" data-format="key">KEY</button>
+                        </div>
+                        <button type="button" id="copyOutputBtn" class="casio-copy-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                            <span data-i18n="casio.copy">Sao chép</span>
+                        </button>
+                    </div>
+                </div>
+                <pre class="casio-output-text is-empty" id="outputText"></pre>
+            </section>
+        </main>
+    </div>
+
+    <input type="file" id="fileInput" accept=".asm,.txt,text/plain" hidden>
+
+    <div class="modal-overlay hidden" id="settingsModal">
+        <div class="modal settings-modal">
+            <div class="modal-head">
+                <h2 data-i18n="editor.settings">Cài đặt</h2>
+                <button type="button" class="modal-close" id="settingsClose" aria-label="Close">&times;</button>
+            </div>
+            <div class="settings-body">
+                <div class="set-row">
+                    <div class="set-label">
+                        <span data-i18n="editor.set.theme">Sáng / Tối</span>
+                        <span class="set-hint" data-i18n="editor.set.themeHint">Chế độ hiển thị</span>
+                    </div>
+                    <div class="set-seg" id="setTheme">
+                        <button type="button" data-val="light" data-i18n="editor.set.light">Sáng</button>
+                        <button type="button" data-val="dark" data-i18n="editor.set.dark">Tối</button>
+                    </div>
+                </div>
+
+                <div class="set-row">
+                    <div class="set-label">
+                        <span data-i18n="editor.set.tabSize">Cỡ tab</span>
+                        <span class="set-hint" data-i18n="editor.set.tabSizeHint">Số khoảng trắng cho mỗi tab</span>
+                    </div>
+                    <div class="set-seg" id="setTabSize">
+                        <button type="button" data-val="2">2</button>
+                        <button type="button" data-val="4">4</button>
+                        <button type="button" data-val="8">8</button>
+                    </div>
+                </div>
+
+                <div class="set-row">
+                    <div class="set-label">
+                        <span data-i18n="editor.set.lineNumbers">Hiển thị số dòng</span>
+                    </div>
+                    <label class="set-switch">
+                        <input type="checkbox" id="setLineNumbers">
+                        <span class="set-slider"></span>
+                    </label>
+                </div>
+
+                <div class="set-row">
+                    <div class="set-label">
+                        <span data-i18n="editor.set.zoomFun">Zoom code</span>
+                        <span class="set-hint" data-i18n="editor.set.zoomFunHint">Chế độ vui: màn hình lướt theo con trỏ; bấm để zoom ra</span>
+                    </div>
+                    <label class="set-switch">
+                        <input type="checkbox" id="setZoomFun">
+                        <span class="set-slider"></span>
+                    </label>
+                </div>
+
+                <div class="set-row">
+                    <div class="set-label">
+                        <span data-i18n="editor.set.zoomScale">Mức zoom</span>
+                        <span class="set-hint" data-i18n="editor.set.zoomScaleHint">Độ phóng to khi màn hình lướt theo con trỏ</span>
+                    </div>
+                    <div class="set-zoom">
+                        <input type="range" id="setZoom" min="1.5" max="4" step="0.1" value="3.5">
+                        <span class="set-zoom-val" id="setZoomValue">3.5x</span>
+                    </div>
+                </div>
+
+                <div class="set-row set-row-reset">
+                    <button type="button" class="sv-btn sv-danger" id="setReset" data-i18n="editor.set.reset">Cài đặt về mặc định</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="labelModal">
+        <div class="modal casio-label-modal">
+            <div class="modal-head">
+                <div>
+                    <h2><span data-i18n="casio.labels.title">Label</span> · <span id="labelModelName">fx-580VN X</span></h2>
+                    <p class="casio-label-sub" id="labelCount"></p>
+                </div>
+                <button type="button" class="modal-close" id="labelClose" aria-label="Close">&times;</button>
+            </div>
+            <div class="casio-label-toolbar">
+                <label class="casio-label-search">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                    <input type="search" id="labelSearch" data-i18n-placeholder="casio.labels.search" placeholder="Tìm label hoặc địa chỉ...">
+                </label>
+            </div>
+            <div class="casio-label-table-wrap">
+                <table class="casio-label-table">
+                    <thead>
+                        <tr>
+                            <th data-i18n="casio.labels.address">Địa chỉ</th>
+                            <th data-i18n="casio.labels.label">Label</th>
+                        </tr>
+                    </thead>
+                    <tbody id="labelBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="savedModal">
+        <div class="modal">
+            <div class="modal-head">
+                <h2 data-i18n="editor.savedTabs">Tab đã lưu</h2>
+                <button type="button" class="modal-close" id="savedClose" aria-label="Close">&times;</button>
+            </div>
+            <div class="saved-list" id="savedList"></div>
+        </div>
+    </div>
+
+    <div class="casio-confirm-menu hidden" id="confirmMenu" role="dialog" aria-labelledby="confirmTitle">
+        <div class="casio-confirm-head">
+            <span class="casio-confirm-icon" aria-hidden="true">!</span>
+            <div class="casio-confirm-copy">
+                <h3 id="confirmTitle"></h3>
+                <p id="confirmMessage"></p>
+            </div>
+        </div>
+        <div class="casio-confirm-actions">
+            <button type="button" id="confirmCancel">Hủy</button>
+            <button type="button" id="confirmOk" class="is-danger">Xóa</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="vendor/monaco/vs/loader.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/casio-compiler.js"></script>
+</body>
+</html>

@@ -1,0 +1,481 @@
+/* ==========================================
+   Container & Layout
+   ========================================== */
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--spacing-xl);
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.setup-link {
+    position: fixed;
+    right: var(--spacing-lg);
+    bottom: var(--spacing-lg);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 0.4rem 0.75rem;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.7);
+    transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.setup-link:hover {
+    color: var(--primary-blue);
+    background: var(--white);
+}
+
+/* ==========================================
+   Flip Card Structure
+   ========================================== */
+
+.flip-card {
+    perspective: 1200px;
+    width: 100%;
+    max-width: 420px;
+    height: 620px;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform var(--transition-slow);
+    transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.flip-card-front {
+    z-index: 2;
+    pointer-events: auto;
+}
+
+.flip-card-back {
+    transform: rotateY(180deg);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.flip-card.flipped .flip-card-front {
+    z-index: 1;
+    pointer-events: none;
+}
+
+.flip-card.flipped .flip-card-back {
+    z-index: 2;
+    pointer-events: auto;
+}
+
+/* ==========================================
+   Card Content & Border Animation
+   ========================================== */
+
+.card-content {
+    position: relative;
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    padding: 1.75rem;
+    box-shadow: var(--shadow-xl);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Tia xanh chạy quanh viền card */
+.card-content::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    background: linear-gradient(90deg, var(--primary-blue), var(--primary-blue-light), var(--primary-blue));
+    background-size: 200% 200%;
+    border-radius: var(--radius-xl);
+    z-index: -1;
+    animation: borderFlow 3s linear infinite;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    padding: 3px;
+    pointer-events: none;
+}
+
+@keyframes borderFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ==========================================
+   Logo & Welcome Text
+   ========================================== */
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.logo-icon {
+    width: 30px;
+    height: 30px;
+    color: var(--primary-blue);
+}
+
+.logo h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1.2;
+    background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+}
+
+.welcome-text {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.welcome-text h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-xs);
+}
+
+.welcome-text p {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: var(--text-secondary);
+}
+
+/* ==========================================
+   Form Styles
+   ========================================== */
+
+.auth-form {
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: var(--spacing-sm);
+    position: relative;
+}
+
+/* ==========================================
+   Input Fields
+   ========================================== */
+
+.input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    border: 2px solid var(--gray-medium);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    color: var(--text-primary);
+    transition: border-color var(--transition-medium), box-shadow var(--transition-medium);
+    outline: none;
+}
+
+.form-input::placeholder {
+    color: var(--text-light);
+}
+
+.form-input:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.12);
+}
+
+.input-wrapper .form-input {
+    padding-right: 2.75rem;
+}
+
+/* ==========================================
+   Password Toggle Button
+   ========================================== */
+
+.toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 0.6rem;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--text-light);
+    border-radius: 50%;
+    transition: color var(--transition-fast), background var(--transition-fast);
+    z-index: 3;
+}
+
+.toggle-password:hover {
+    color: var(--primary-blue);
+    background: rgba(0, 102, 255, 0.08);
+}
+
+.toggle-password svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+}
+
+.toggle-password .icon-eye-closed {
+    display: none;
+}
+
+.toggle-password.revealed .icon-eye-open {
+    display: none;
+}
+
+.toggle-password.revealed .icon-eye-closed {
+    display: block;
+}
+
+/* ==========================================
+   Error Messages
+   ========================================== */
+
+.error-message {
+    display: block;
+    color: var(--error-color);
+    font-size: 0.78rem;
+    line-height: 1.2;
+    margin-top: 2px;
+    min-height: 0.95rem;
+}
+
+.form-group.error .form-input {
+    border-color: var(--error-color);
+}
+
+.form-group.error .form-input:focus {
+    border-color: var(--error-color);
+    box-shadow: 0 0 0 3px rgba(255, 51, 51, 0.12);
+}
+
+.form-group.shake {
+    animation: shake 0.5s;
+}
+
+/* ==========================================
+   Button Styles
+   ========================================== */
+
+.btn {
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-medium);
+    position: relative;
+    z-index: 1;
+}
+
+.btn-primary {
+    background: var(--white);
+    color: var(--primary-blue);
+    border: 2px solid var(--primary-blue);
+}
+
+.btn-primary:hover {
+    background: var(--primary-blue);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Tia trắng chạy quanh viền button khi hover */
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(90deg, var(--white), rgba(255, 255, 255, 0.2), var(--white), rgba(255, 255, 255, 0.2), var(--white));
+    background-size: 200% 200%;
+    border-radius: var(--radius-md);
+    z-index: -1;
+    opacity: 0;
+    animation: borderFlow 2s linear infinite;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    padding: 2px;
+    pointer-events: none;
+    transition: opacity var(--transition-medium);
+}
+
+.btn-primary:hover::before {
+    opacity: 1;
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ==========================================
+   Form Footer & Links
+   ========================================== */
+
+.form-footer {
+    text-align: center;
+    margin-top: var(--spacing-lg);
+}
+
+.form-footer p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.link {
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color var(--transition-fast);
+}
+
+.link:hover {
+    color: var(--primary-blue-dark);
+    text-decoration: underline;
+}
+
+/* ==========================================
+   Loading State
+   ========================================== */
+
+.btn.loading {
+    pointer-events: none;
+    opacity: 0.7;
+    color: transparent;
+}
+
+.btn.loading::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    border: 2px solid transparent;
+    border-top-color: var(--primary-blue);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+.btn-primary.loading:hover {
+    background: var(--white);
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ==========================================
+   OTP Boxes
+   ========================================== */
+
+.otp-boxes {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.otp-box {
+    width: 46px;
+    height: 56px;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    border: 2px solid var(--gray-medium);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    outline: none;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.otp-box:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.12);
+}
+
+.otp-box.filled {
+    border-color: var(--primary-blue);
+}
+
+#verifyView .form-footer p {
+    margin-top: 0.35rem;
+}
+
+/* ==========================================
+   Responsive Design
+   ========================================== */
+
+@media (max-width: 480px) {
+    .container {
+        padding: var(--spacing-md);
+    }
+
+    .card-content {
+        padding: var(--spacing-lg);
+    }
+
+    .logo h1 {
+        font-size: 1.9rem;
+    }
+
+    .otp-boxes {
+        gap: 0.35rem;
+    }
+
+    .otp-box {
+        width: 40px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+}

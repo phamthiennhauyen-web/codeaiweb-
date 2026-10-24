@@ -1,0 +1,219 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project - CodeAI</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/projects.css">
+    <link rel="stylesheet" href="vendor/highlight/highlight-theme.css">
+</head>
+<body class="pc-page pd-page">
+    <div class="pc-shell">
+        <header class="pc-topbar">
+            <div class="pc-topbar-left">
+                <a href="projects.html" class="pc-icon-btn pc-back-icon" aria-label="Back">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                </a>
+                <a href="index.html" class="pc-brand">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    <span>CodeAI</span>
+                </a>
+                <span class="pc-topbar-divider"></span>
+                <a href="projects.html" class="pc-back-link" data-i18n="project.back">Dự án</a>
+            </div>
+            <div class="pc-topbar-right">
+                <span class="pc-sync offline" id="syncStatus"><span class="pc-sync-dot"></span><span data-i18n="proj.sync.offline">Mất kết nối</span></span>
+                <button type="button" class="pc-icon-btn pc-theme-toggle" aria-label="Theme">
+                    <svg class="pc-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                    <svg class="pc-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+                </button>
+                <div class="pc-user">
+                    <span class="pc-avatar" id="userAvatar">C</span>
+                    <span class="pc-user-name" id="userName"></span>
+                </div>
+            </div>
+        </header>
+
+        <main class="pd-main">
+            <section class="pd-head">
+                <div class="pd-head-main">
+                    <div class="pd-title-row">
+                        <h1 id="projectTitle" data-i18n="project.loading">Đang tải dự án...</h1>
+                        <button type="button" class="pc-icon-btn pd-edit-btn hidden" id="editProjectBtn" title="Edit">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                        </button>
+                    </div>
+                    <p class="pd-description" id="projectDescription"></p>
+                    <div class="pd-meta">
+                        <span class="pc-badge" id="projectBadge"></span>
+                        <span id="projectFileCount"></span>
+                        <span id="projectSize"></span>
+                        <span id="projectOwner"></span>
+                    </div>
+                </div>
+                <div class="pd-head-actions">
+                    <button type="button" class="pc-btn pc-btn-ghost" id="shareBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></svg>
+                        <span data-i18n="project.share">Chia sẻ</span>
+                    </button>
+                    <button type="button" class="pc-btn pc-btn-ghost" id="zipBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        <span data-i18n="project.zip">Tải ZIP</span>
+                    </button>
+                    <button type="button" class="pc-icon-btn pc-danger-icon hidden" id="deleteProjectBtn" aria-label="Delete">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                    </button>
+                </div>
+            </section>
+
+            <div class="pc-stale-banner hidden" id="projectStaleBanner">
+                <span data-i18n="project.staleBanner">Dự án vừa được cập nhật ở nơi khác.</span>
+                <button type="button" class="pc-btn pc-btn-small pc-btn-ghost" id="reloadProjectBtn" data-i18n="project.file.reload">Tải lại</button>
+            </div>
+
+            <section class="pd-layout">
+                <aside class="pd-sidebar">
+                    <div class="pd-sidebar-head">
+                        <span data-i18n="project.files">FILE</span>
+                        <button type="button" class="pc-icon-btn pd-add-btn" id="addFileBtn" aria-label="Add files">+</button>
+                    </div>
+                    <div class="pd-file-list" id="fileList"></div>
+                    <div class="pd-sidebar-empty hidden" id="emptyFiles" data-i18n="project.emptyFiles">Chưa có file nào. Hãy thêm file hoặc snippet.</div>
+                    <div class="pd-dropzone hidden" id="dropzone">
+                        <strong data-i18n="project.dropTitle">Kéo thả file vào đây</strong>
+                        <span data-i18n="project.dropHint">hoặc bấm để chọn nhiều file</span>
+                    </div>
+                    <button type="button" class="pc-btn pc-btn-primary pd-snippet-btn hidden" id="addSnippetBtn">
+                        <span class="pc-plus">+</span>
+                        <span data-i18n="project.addSnippet">Dán snippet</span>
+                    </button>
+                    <input type="file" id="fileInput" multiple hidden>
+                </aside>
+
+                <section class="pd-viewer">
+                    <div class="pd-viewer-empty" id="viewerEmpty">
+                        <div class="pc-empty-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                        </div>
+                        <p data-i18n="project.selectFile">Bấm vào 1 file để xem file</p>
+                    </div>
+
+                    <div class="pd-viewer-content hidden" id="viewerContent">
+                        <div class="pd-file-toolbar">
+                            <div class="pd-file-title">
+                                <strong id="currentFileLabel"></strong>
+                                <span class="pc-badge" id="currentFileLanguage"></span>
+                            </div>
+                            <div class="pd-file-actions">
+                                <button type="button" class="pc-btn pc-btn-ghost pc-btn-small" id="copyFileBtn" data-i18n="project.file.copy">Copy</button>
+                                <button type="button" class="pc-btn pc-btn-ghost pc-btn-small" id="downloadFileBtn" data-i18n="project.file.download">Tải file</button>
+                                <button type="button" class="pc-btn pc-btn-ghost pc-btn-small hidden" id="renameFileBtn" data-i18n="project.file.rename">Đổi tên nhãn</button>
+                                <button type="button" class="pc-btn pc-btn-ghost pc-btn-small hidden" id="editFileBtn" data-i18n="project.file.edit">Sửa nội dung</button>
+                                <button type="button" class="pc-icon-btn pc-danger-icon hidden" id="deleteFileBtn" aria-label="Delete file">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="pd-file-meta">
+                            <span id="currentFileLines"></span>
+                            <span id="currentFileSize"></span>
+                            <span id="currentFileUpdated"></span>
+                        </div>
+                        <div class="pc-stale-banner hidden" id="fileStaleBanner">
+                            <span data-i18n="project.file.stale">File đã có thay đổi mới từ thiết bị khác.</span>
+                            <button type="button" class="pc-btn pc-btn-small pc-btn-ghost" id="reloadFileBtn" data-i18n="project.file.reload">Tải lại</button>
+                        </div>
+                        <div class="pc-code-scroll chat-code" id="codeScroll">
+                            <pre class="pc-line-numbers" id="lineNumbers"></pre>
+                            <pre class="pc-code"><code class="hljs" id="codeBlock"></code></pre>
+                        </div>
+                        <div class="pd-edit-area hidden" id="editArea">
+                            <textarea class="pc-code-editor" id="fileEditor" spellcheck="false"></textarea>
+                            <div class="pd-edit-actions">
+                                <button type="button" class="pc-btn pc-btn-ghost" id="cancelEditFileBtn" data-i18n="project.file.cancel">Hủy</button>
+                                <button type="button" class="pc-btn pc-btn-primary" id="saveFileBtn" data-i18n="project.file.save">Lưu file</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </main>
+    </div>
+
+    <div class="pc-modal-backdrop" id="editProjectModal">
+        <form class="pc-modal" id="editProjectForm">
+            <div class="pc-modal-head">
+                <h2 data-i18n="proj.modal.edit.title">Chỉnh sửa dự án</h2>
+                <button type="button" class="pc-icon-btn" id="editProjectClose" aria-label="Close">×</button>
+            </div>
+            <div class="pc-modal-body">
+                <label class="pc-field">
+                    <span data-i18n="proj.field.name">Tên dự án</span>
+                    <input class="pc-input" id="editProjectName" maxlength="120" required>
+                </label>
+                <label class="pc-field">
+                    <span data-i18n="proj.field.description">Mô tả</span>
+                    <textarea class="pc-textarea" id="editProjectDescription" maxlength="5000" rows="4"></textarea>
+                </label>
+                <div class="pc-field">
+                    <span data-i18n="proj.field.visibility">Hiển thị</span>
+                    <div class="pc-visibility-grid">
+                        <label class="pc-visibility-card">
+                            <input type="radio" name="editVisibility" value="private">
+                            <span class="pc-visibility-icon is-private">P</span>
+                            <span>
+                                <strong data-i18n="proj.visibility.private">Private</strong>
+                                <small data-i18n="proj.visibility.private.hint">Chỉ bạn và người có link chia sẻ xem được.</small>
+                            </span>
+                        </label>
+                        <label class="pc-visibility-card">
+                            <input type="radio" name="editVisibility" value="public">
+                            <span class="pc-visibility-icon is-public">P</span>
+                            <span>
+                                <strong data-i18n="proj.visibility.public">Public</strong>
+                                <small data-i18n="proj.visibility.public.hint">Mọi người dùng đã đăng nhập đều xem được.</small>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="pc-modal-foot">
+                <button type="button" class="pc-btn pc-btn-ghost" id="editProjectCancel" data-i18n="proj.action.cancel">Hủy</button>
+                <button type="submit" class="pc-btn pc-btn-primary" data-i18n="proj.action.save">Lưu</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="pc-modal-backdrop" id="snippetModal">
+        <div class="pc-modal pc-snippet-modal">
+            <div class="pc-modal-head">
+                <div>
+                    <h2 data-i18n="project.snippet.title">Thêm code snippet</h2>
+                    <p class="pc-modal-sub" id="snippetQuotaHint"></p>
+                </div>
+                <button type="button" class="pc-icon-btn" id="snippetClose" aria-label="Close">×</button>
+            </div>
+            <div class="pc-modal-body">
+                <div id="snippetRows"></div>
+                <button type="button" class="pc-btn pc-btn-ghost pc-add-frame" id="addSnippetFrame" data-i18n="project.snippet.add">Thêm khung code</button>
+            </div>
+            <div class="pc-modal-foot">
+                <button type="button" class="pc-btn pc-btn-ghost" id="snippetCancel" data-i18n="proj.action.cancel">Hủy</button>
+                <button type="button" class="pc-btn pc-btn-primary" id="saveSnippetsBtn" data-i18n="project.snippet.save">Lưu tất cả</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/projects-common.js"></script>
+    <script src="js/project-ws.js"></script>
+    <script src="vendor/highlight/highlight.min.js"></script>
+    <script src="js/project.js"></script>
+</body>
+</html>
+

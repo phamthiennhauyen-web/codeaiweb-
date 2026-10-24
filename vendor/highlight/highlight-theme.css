@@ -1,0 +1,83 @@
+.chat-code pre code.hljs {
+    display: block;
+    overflow-x: visible;
+    padding: 0;
+    background: transparent;
+    color: #dbe5f3;
+}
+
+.chat-code .hljs-comment,
+.chat-code .hljs-quote {
+    color: #8b98aa;
+    font-style: italic;
+}
+
+.chat-code .hljs-keyword,
+.chat-code .hljs-selector-tag,
+.chat-code .hljs-type,
+.chat-code .hljs-doctag {
+    color: #ff7b8a;
+}
+
+.chat-code .hljs-string,
+.chat-code .hljs-attribute,
+.chat-code .hljs-template-tag,
+.chat-code .hljs-addition,
+.chat-code .hljs-regexp {
+    color: #a8d8a0;
+}
+
+.chat-code .hljs-number,
+.chat-code .hljs-literal,
+.chat-code .hljs-symbol,
+.chat-code .hljs-bullet,
+.chat-code .hljs-link {
+    color: #79c0ff;
+}
+
+.chat-code .hljs-title,
+.chat-code .hljs-section,
+.chat-code .hljs-name,
+.chat-code .hljs-selector-id,
+.chat-code .hljs-selector-class {
+    color: #d2a8ff;
+}
+
+.chat-code .hljs-variable,
+.chat-code .hljs-template-variable,
+.chat-code .hljs-attr,
+.chat-code .hljs-params {
+    color: #ffb86b;
+}
+
+.chat-code .hljs-built_in,
+.chat-code .hljs-class .hljs-title,
+.chat-code .hljs-function .hljs-title {
+    color: #ffc66d;
+}
+
+.chat-code .hljs-meta,
+.chat-code .hljs-meta .hljs-keyword {
+    color: #79c0ff;
+}
+
+.chat-code .hljs-deletion {
+    color: #ffdcd7;
+    background: #67060c;
+}
+
+.chat-code .hljs-emphasis {
+    font-style: italic;
+}
+
+.chat-code .hljs-strong {
+    font-weight: 700;
+}
+
+.chat-code .hljs-addition {
+    background: rgba(46, 160, 67, 0.15);
+}
+
+.chat-code .hljs-section {
+    font-weight: 700;
+}
